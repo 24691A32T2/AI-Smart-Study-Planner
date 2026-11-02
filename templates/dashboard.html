@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% block body %}
+<h2 class="mb-4">Welcome back, {{ user.name.split()[0] }} 👋</h2>
+<div class="row g-3 mb-4">{% for l,v in [('Subjects',st.subjects),('Study hours',st.hours),('Completed tasks',st.done),('Pending tasks',st.pending)] %}
+<div class="col-6 col-lg-3"><div class="card-s"><div class="text-muted">{{l}}</div><div class="stat">{{v}}</div></div></div>{% endfor %}</div>
+<div class="card-s mb-4"><div class="d-flex justify-content-between"><b>Overall progress</b><span>{{ st.progress }}%</span></div>
+<div class="progress mt-2" style="height:12px"><div class="progress-bar bg-grad" style="width:{{ st.progress }}%"></div></div></div>
+<div class="row g-3"><div class="col-lg-7"><div class="card-s"><b>Weekly study hours</b><canvas id="cDaily" height="140"></canvas></div></div>
+<div class="col-lg-5"><div class="card-s mb-3"><b>Today's schedule</b>
+{% for s in sched %}<div class="slot {{ s.kind }}">{{ s.start }}-{{ s.end }} · {{ s.name or 'Break' }}</div>{% else %}<p class="text-muted mb-0 mt-2">Nothing scheduled. <a href="{{ url_for('main.planner') }}">Generate a timetable</a>.</p>{% endfor %}</div>
+<div class="card-s mb-3"><b>Upcoming exams</b>{% for e in exams %}<div class="d-flex justify-content-between mt-2"><span>{{ e.name }}</span><span class="badge bg-primary">{{ e.days }} days</span></div>{% else %}<p class="text-muted mb-0 mt-2">No exams added.</p>{% endfor %}</div>
+{% if rec %}<div class="card-s"><b>Study next: {{ rec.name }}</b><p class="text-muted mb-0 small">Because: {{ rec.reason }}</p></div>{% endif %}</div></div>{% endblock %}
+{% block scripts %}<script>loadCharts()</script>{% endblock %}

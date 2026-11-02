@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block body %}<h2 class="mb-3">AI Insights</h2>
+{% if r.next %}<div class="card-s mb-3 border-start border-4 border-primary"><small class="text-muted">STUDY NEXT</small><h4>{{ r.next.name }}</h4><p class="mb-1">Why: {{ r.next.reason }}.</p><p class="mb-0">Today's target: <b>{{ r.target }}</b></p></div>
+<div class="row g-3"><div class="col-lg-6"><div class="card-s h-100"><b>Priority ranking</b>{% for i in r.ranked %}<div class="mt-2"><div class="d-flex justify-content-between"><span>{{ i.name }} {% if i.weak %}<span class="badge bg-danger">weak</span>{% endif %}</span><small>score {{ i.score }}</small></div><small class="text-muted">{{ i.reason }}</small></div>{% endfor %}</div></div>
+<div class="col-lg-6"><div class="card-s mb-3"><b>Revision sessions</b>{% for v in r.revise %}<p class="mb-1 mt-2">{{ v.text }}</p>{% else %}<p class="text-muted mt-2 mb-0">No exams within 10 days.</p>{% endfor %}</div>
+<div class="card-s"><b>Performance tips</b>{% for t in r.tips %}<p class="mb-1 mt-2">• {{ t }}</p>{% endfor %}</div></div></div>
+{% else %}<p class="text-muted">Add subjects to get recommendations.</p>{% endif %}{% endblock %}

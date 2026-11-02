@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block body %}<h2 class="mb-3">Performance Analytics</h2>
+<p class="text-muted">Current streak: <b>{{ c.streak }} day(s)</b> · Studied on <b>{{ c.consistency_pct }}%</b> of the last 30 days</p>
+<div class="row g-3">{% for id,t in [('cDaily','Daily study hours (7 days)'),('cWeekly','Weekly study hours'),('cSubject','Subject-wise progress'),('cTasks','Completed vs pending tasks'),('cConsist','Study consistency (30 days)')] %}
+<div class="col-lg-6"><div class="card-s"><b>{{t}}</b><canvas id="{{id}}" height="150"></canvas></div></div>{% endfor %}</div>{% endblock %}
+{% block scripts %}<script>loadCharts()</script>{% endblock %}

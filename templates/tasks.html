@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block body %}<h2 class="mb-3">Tasks</h2>
+<form class="card-s mb-3 row g-2" method="post" action="{{ url_for('main.task_save') }}"><input type="hidden" name="id" value="{{ edit.id if edit }}">
+<div class="col-md-4"><input class="form-control" name="title" required placeholder="Task title" value="{{ edit.title if edit }}"></div>
+<div class="col-md-3"><select class="form-select" name="subject_id"><option value="">No subject</option>{% for s in subs %}<option value="{{s.id}}" {{ 'selected' if edit and edit.subject_id==s.id }}>{{s.name}}</option>{% endfor %}</select></div>
+<div class="col-md-3"><input class="form-control" type="date" name="deadline" value="{{ edit.deadline if edit and edit.deadline }}"></div>
+<div class="col-md-2"><button class="btn btn-grad w-100">{{ 'Update' if edit else 'Add task' }}</button></div></form>
+<div class="btn-group mb-3">{% for k,l in [('all','All'),('pending','Pending'),('done','Completed')] %}<a class="btn btn-outline-primary {{ 'active' if flt==k }}" href="?f={{k}}">{{l}}</a>{% endfor %}</div>
+<div class="card-s">{% for t in rows %}<div class="d-flex align-items-center py-2 border-bottom gap-2">
+<form method="post" action="{{ url_for('main.task_toggle', i=t.id) }}"><button class="btn btn-sm {{ 'btn-success' if t.completed else 'btn-outline-secondary' }}"><i class="bi bi-check2"></i></button></form>
+<div class="flex-grow-1 {{ 'text-decoration-line-through text-muted' if t.completed }}">{{ t.title }}<br><small class="text-muted">{{ t.sname or 'General' }} · due {{ t.deadline or '-' }}{% if not t.completed and t.deadline and t.deadline < today %} <span class="badge bg-danger">overdue</span>{% endif %}</small></div>
+<a class="btn btn-sm btn-outline-primary" href="?edit={{t.id}}">Edit</a>
+<form method="post" action="{{ url_for('main.task_delete', i=t.id) }}"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form></div>
+{% else %}<p class="text-muted mb-0">No tasks here.</p>{% endfor %}</div>{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block body %}<h2 class="mb-3">Pomodoro Timer</h2><div class="row g-3"><div class="col-lg-6"><div class="card-s text-center">
+<div class="btn-group mb-3">{% for m,l in [('25','Focus 25'),('5','Short 5'),('15','Long 15')] %}<button class="btn btn-outline-primary mode" data-min="{{m}}" data-kind="{{ 'focus' if m=='25' else 'break' }}">{{l}}</button>{% endfor %}</div>
+<div id="clock" class="clock">25:00</div><select id="subj" class="form-select my-3"><option value="">General study</option>{% for s in subs %}<option value="{{s.id}}">{{s.name}}</option>{% endfor %}</select>
+<button class="btn btn-grad" id="start">Start</button> <button class="btn btn-outline-secondary" id="pause">Pause</button> <button class="btn btn-outline-danger" id="reset">Reset</button></div></div>
+<div class="col-lg-6"><div class="card-s"><b>Today's completed sessions (<span id="cnt">{{ rows|length }}</span>)</b><div id="log">{% for r in rows %}<div class="slot study">{{ r.minutes }} min · {{ r.name or 'General' }}</div>{% endfor %}</div></div></div></div>{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/pomodoro.js') }}"></script>{% endblock %}

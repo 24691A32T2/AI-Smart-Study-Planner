@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block body %}<h2 class="mb-3">Exam Countdown</h2><div class="row g-3">
+{% for e in exams %}<div class="col-md-6"><div class="card-s"><div class="d-flex justify-content-between"><b>{{ e.name }}</b><span class="badge bg-{{ 'danger' if e.days<=7 else 'primary' }} fs-6">{{ e.days }} days</span></div>
+<small class="text-muted">{{ e.exam_date }} · {{ e.completion }}% syllabus covered</small>
+<p class="mt-2 mb-1">{% if e.completion<100 %}Revise: {{ 100-e.completion }}% of the syllabus remains.{% else %}Syllabus complete, do revision only.{% endif %}</p>
+{% for t in e.tasks %}<div class="small">• {{ t.title }} (due {{ t.deadline or 'any time' }})</div>{% else %}<div class="small text-muted">No pending tasks before this exam.</div>{% endfor %}</div></div>
+{% else %}<p class="text-muted">No upcoming exams. Add exam dates in Subjects.</p>{% endfor %}</div>{% endblock %}

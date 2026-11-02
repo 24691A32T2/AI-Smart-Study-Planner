@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block body %}<h2 class="mb-3">Subjects</h2>
+<form class="card-s mb-4 row g-2" method="post" action="{{ url_for('main.subject_save') }}"><input type="hidden" name="id" value="{{ edit.id if edit }}">
+<div class="col-md-3"><input class="form-control" name="name" placeholder="Subject name" required value="{{ edit.name if edit }}"></div>
+<div class="col-md-2"><select class="form-select" name="difficulty">{% for d in ['Easy','Medium','Hard'] %}<option {{ 'selected' if (edit and edit.difficulty==d) or (not edit and d=='Medium') }}>{{d}}</option>{% endfor %}</select></div>
+<div class="col-md-2"><select class="form-select" name="priority">{% for v,l in [(1,'Low priority'),(2,'Medium priority'),(3,'High priority')] %}<option value="{{v}}" {{ 'selected' if (edit and edit.priority==v) or (not edit and v==2) }}>{{l}}</option>{% endfor %}</select></div>
+<div class="col-md-2"><input class="form-control" type="date" name="exam_date" value="{{ edit.exam_date if edit and edit.exam_date }}" title="Exam date"></div>
+<div class="col-md-1"><input class="form-control" type="number" min="0" max="100" name="completion" value="{{ edit.completion if edit else 0 }}" title="% done"></div>
+<div class="col-md-2"><button class="btn btn-grad w-100">{{ 'Update' if edit else 'Add' }}</button></div></form>
+<div class="row g-3">{% for s in rows %}<div class="col-md-6 col-xl-4"><div class="card-s"><div class="d-flex justify-content-between"><b>{{ s.name }}</b><span class="badge bg-{{ {'Easy':'success','Medium':'warning','Hard':'danger'}[s.difficulty] }}">{{ s.difficulty }}</span></div>
+<small class="text-muted">Priority {{ s.priority }}/3 · Exam: {{ s.exam_date or 'not set' }}</small>
+<div class="progress my-2"><div class="progress-bar bg-grad" style="width:{{ s.completion }}%">{{ s.completion }}%</div></div>
+<a class="btn btn-sm btn-outline-primary" href="?edit={{ s.id }}">Edit</a>
+<form class="d-inline" method="post" action="{{ url_for('main.subject_delete', i=s.id) }}" onsubmit="return confirm('Delete subject and its exam/schedule?')"><button class="btn btn-sm btn-outline-danger">Delete</button></form></div></div>
+{% else %}<p class="text-muted">No subjects yet. Add your first one above.</p>{% endfor %}</div>{% endblock %}

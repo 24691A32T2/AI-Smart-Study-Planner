@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block body %}<div class="mx-auto card-s" style="max-width:420px"><h3 class="mb-3">{% if 'login'=='login' %}Welcome back{% else %}Create account{% endif %}</h3>
+<form method="post">{% if 'login'=='register' %}<input class="form-control mb-3" name="name" placeholder="Full name" required minlength="2">{% endif %}
+<input class="form-control mb-3" type="email" name="email" placeholder="Email" required><input class="form-control mb-3" type="password" name="password" placeholder="Password" required minlength="6">
+<button class="btn btn-grad w-100">{% if 'login'=='login' %}Log in{% else %}Register{% endif %}</button></form>
+<p class="mt-3 mb-0 text-muted">{% if 'login'=='login' %}New here? <a href="{{ url_for('auth.register') }}">Register</a>{% else %}Have an account? <a href="{{ url_for('auth.login') }}">Log in</a>{% endif %}</p></div>{% endblock %}
